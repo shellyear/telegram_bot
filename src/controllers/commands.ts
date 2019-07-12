@@ -2,14 +2,16 @@ import { ContextMessageUpdate } from "telegraf";
 import PexelsService from "../services/pexelsService";
 import CourseHunters from "../services/courseHunters";
 import commands from '../helpers/commandTypes';
-import Logger from '../logger/logger';
+import Logger from '../logger';
 
-const logger = new Logger();
-const pexelsService = new PexelsService();
-const courseHunters = new CourseHunters();
-
+const DOMAIN = 'CommandControllers'
 export default class CommandsControllers {
+  private pexelsService: PexelsService;
+  private courseHunters: CourseHunters;
+
   constructor() {
+    this.pexelsService = new PexelsService();
+    this.courseHunters = new CourseHunters();
     this.getPictures = this.getPictures.bind(this)
     this.getTutorials = this.getTutorials.bind(this)
     this.getVideos = this.getVideos.bind(this)
@@ -18,9 +20,9 @@ export default class CommandsControllers {
 
   public getPictures(ctx: ContextMessageUpdate) {
     const text = this.clearCommandFromRequest(ctx.update.message.text, commands.PICTURE);
-    logger.info(text);
-    pexelsService.getPictures(text) 
+    this.pexelsService.getPictures(text) 
     .then((photos: string[]) => {
+      Logger.debug(`found photos: ${photos.length}`, DOMAIN)
       if (!photos) {
         ctx.reply('NO PHOTOS :(');    
       } else {
@@ -29,8 +31,8 @@ export default class CommandsControllers {
         });
       }
     })
-    .catch((e: Error) => {
-      console.log(e.message);
+    .catch((err: Error) => {
+      console.log(err.message);
       ctx.reply('NO PHOTOS :(');
     });
   }
@@ -38,7 +40,7 @@ export default class CommandsControllers {
   public getVideos(ctx: ContextMessageUpdate) {
     const text = this.clearCommandFromRequest(ctx.update.message.text, commands.VIDEO);
   
-    pexelsService.getVideos(text) 
+    return this.pexelsService.getVideos(text) 
     .then((videos: string[]) => {
       if (!videos) {
         ctx.reply('NO VIDEOS :(');    
@@ -49,8 +51,8 @@ export default class CommandsControllers {
       }
     })
     .catch((err: Error) => {
-      console.log(err.message);
       ctx.reply('NO VIDEOS :(');    
+      console.log(err.message);
     });
   }
   
@@ -58,7 +60,7 @@ export default class CommandsControllers {
 
     const text = this.clearCommandFromRequest(ctx.update.message.text, commands.TUTORIAL);
   
-    courseHunters.getTutorial(text)
+    this.courseHunters.getTutorial(text)
     .then((data) => {       
       if (!data) {
         ctx.reply('NO TUTORIALS :(');
