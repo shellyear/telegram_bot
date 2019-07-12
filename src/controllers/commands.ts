@@ -7,7 +7,12 @@ const pexelsService = new PexelsService();
 const courseHunters = new CourseHunters();
 
 export default class CommandsControllers {
-  constructor() {}
+  constructor() {
+    this.getPictures = this.getPictures.bind(this);
+    this.clearCommandFromRequest = this.clearCommandFromRequest.bind(this);
+    this.getTutorials = this.getTutorials.bind(this);
+    this.getVideos = this.getVideos.bind(this);
+  }
 
   public getPictures(ctx: ContextMessageUpdate) {
     const text = this.clearCommandFromRequest(ctx.update.message.text, commands.PICTURE);
