@@ -2,15 +2,23 @@ import { ContextMessageUpdate } from "telegraf";
 import PexelsService from "../services/pexelsService";
 import CourseHunters from "../services/courseHunters";
 import commands from '../helpers/commandTypes';
+import Logger from '../logger/logger';
 
+const logger = new Logger();
 const pexelsService = new PexelsService();
 const courseHunters = new CourseHunters();
 
 export default class CommandsControllers {
-  constructor() {}
+  constructor() {
+    this.getPictures = this.getPictures.bind(this)
+    this.getTutorials = this.getTutorials.bind(this)
+    this.getVideos = this.getVideos.bind(this)
+  }
+  
 
   public getPictures(ctx: ContextMessageUpdate) {
     const text = this.clearCommandFromRequest(ctx.update.message.text, commands.PICTURE);
+    logger.info(text);
     pexelsService.getPictures(text) 
     .then((photos: string[]) => {
       if (!photos) {
@@ -23,7 +31,7 @@ export default class CommandsControllers {
     })
     .catch((e: Error) => {
       console.log(e.message);
-      ctx.reply('NO PHOTOS :(');    
+      ctx.reply('NO PHOTOS :(');
     });
   }
   
@@ -47,10 +55,11 @@ export default class CommandsControllers {
   }
   
   public getTutorials(ctx: ContextMessageUpdate) {
+
     const text = this.clearCommandFromRequest(ctx.update.message.text, commands.TUTORIAL);
   
     courseHunters.getTutorial(text)
-    .then((data) => {
+    .then((data) => {       
       if (!data) {
         ctx.reply('NO TUTORIALS :(');
       } else {
@@ -63,10 +72,10 @@ export default class CommandsControllers {
       console.log(err.message);
       ctx.reply('NO TUTORIALS :(');
     });
+  }  
     
-  }
-
   private clearCommandFromRequest(requestString: string, command: string): string {
     return requestString.replace(new RegExp(`\/${command}\\s\+`), '');
   }
+
 }

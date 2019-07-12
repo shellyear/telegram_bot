@@ -1,8 +1,8 @@
 import Telegraf, { ContextMessageUpdate } from "telegraf";
-import CommandsController from "../controllers/commands";
+import CommandsControllers from "../controllers/commands";
 import commands from '../helpers/commandTypes';
 
-const commandsController = new CommandsController();
+const commandsController = new CommandsControllers();
 
 export default class CommandMiddleware {
   private _bot: Telegraf<ContextMessageUpdate>;

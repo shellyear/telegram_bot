@@ -1,7 +1,9 @@
 import Telegraf from 'telegraf';
 import CommandMiddleware from './middleware/commands';
+const debug = require('debug')('index');
 
-require('dotenv').config()
+require('dotenv').config();
+
 
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 const commandMiddleware = new CommandMiddleware(bot);
