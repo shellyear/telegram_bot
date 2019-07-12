@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+require('dotenv').config();
+
 const PEXELS_PICTURE_API_URL = 'https://api.pexels.com/v1/search?'
 const PEXELS_VIDEO_API_URL = 'https://api.pexels.com/videos/search?'
 
