@@ -46,6 +46,15 @@ export default class Logger {
 
     private static getCurrentTime(): string {
         const date = new Date();
-        return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+        return `${this.appendMissingZero(date.getHours())}:${this.appendMissingZero(date.getMinutes())}:${this.appendMissingZero(date.getSeconds())}`;
     }
+
+        
+    private static appendMissingZero(timePart: number): string {
+        if (timePart <= 9) {
+            return `0${timePart}`;
+        }
+        return String(timePart);
+    }
+
 }
