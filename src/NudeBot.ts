@@ -15,10 +15,10 @@ export default class NudeBot {
       this.bot.start((ctx) => {
         Logger.info(`Client ${ctx.from.username} has been joined`)
         ctx.reply('Welcome')
-      });
+        return true;
+      })
     } catch(err) {
       Logger.error(err.message, DOMAIN);
-      throw new Error(err.message);
     }
   }
 
@@ -29,14 +29,20 @@ export default class NudeBot {
         return true;
       })
       .catch(err => {
-        console.log(err.message);
-        throw new Error(err)
+        Logger.error(err.message, DOMAIN);
+        return false;
       });
   }
 
   public commands() {
-    this.commandMiddleware.onGetPictures();
-    this.commandMiddleware.onGetTutorials();
-    this.commandMiddleware.onGetVideos();
+    try {
+      this.commandMiddleware.onGetPictures();
+      this.commandMiddleware.onGetVideos();
+      this.commandMiddleware.onGetTutorials();
+      return true;
+    } catch (err) {
+      Logger.error(err.message, DOMAIN)
+      return false;
+    }
   }
 }

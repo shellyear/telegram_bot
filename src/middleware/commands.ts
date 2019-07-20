@@ -1,8 +1,10 @@
 import Telegraf, { ContextMessageUpdate, Composer } from "telegraf";
 import CommandsControllers from "../controllers/commands";
 import commands from '../helpers/commandTypes';
+import Logger from "../logger";
 
 const commandsController = new CommandsControllers();
+const DOMAIN = 'middleware/commands.ts';
 
 export default class CommandMiddleware {
   private _bot: Telegraf<ContextMessageUpdate>;
@@ -12,16 +14,13 @@ export default class CommandMiddleware {
   }
 
   public onGetPictures(): Composer<ContextMessageUpdate> {
-    try {
-      return this._bot.command(commands.PICTURE, commandsController.getPictures);
-    } catch (err) {
-      // log /
-      throw new Error('error description')
-    }
+    return this._bot.command(commands.PICTURE, commandsController.getPictures);
   }
+
   public onGetVideos() {
     return this._bot.command(commands.VIDEO, commandsController.getVideos);
   }
+
   public onGetTutorials() {
     return this._bot.command(commands.TUTORIAL, commandsController.getTutorials);
   }
