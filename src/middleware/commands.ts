@@ -1,6 +1,7 @@
 import Telegraf, { ContextMessageUpdate, Composer } from "telegraf";
 import CommandsControllers from "../controllers/commands";
 import commands from '../helpers/commandTypes';
+import MyDB from '../db/mydb';
 
 const commandsController = new CommandsControllers();
 
@@ -24,5 +25,9 @@ export default class CommandMiddleware {
   }
   public onGetTutorials() {
     return this._bot.command(commands.TUTORIAL, commandsController.getTutorials);
+  }
+
+  public onGetHistory() {
+    return this._bot.command(commands.HISTORY, commandsController.getHistory);
   }
 }
