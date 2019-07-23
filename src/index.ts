@@ -4,6 +4,7 @@ import MyDB from './db/mydb';
 
 require('dotenv').config();
 
+
 Logger.init(LogLevel.DEBUG);
 MyDB.init();
 const nudeBot = new NudeBot();
