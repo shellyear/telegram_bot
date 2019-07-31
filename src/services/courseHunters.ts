@@ -17,7 +17,7 @@ export default class CourseHunters {
         return links;
     }).catch((err) => {
       Logger.error(err.message, DOMAIN);
-      return [];
+      return Promise.reject(err);
     });
   }
 }

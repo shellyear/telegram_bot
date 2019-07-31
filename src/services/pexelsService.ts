@@ -33,7 +33,7 @@ export default class PexelsService {
     })
     .catch((err) => {
       Logger.error(err.message, DOMAIN);
-      return [];
+      return Promise.reject(err);
     });
   }
 
@@ -52,7 +52,7 @@ export default class PexelsService {
     })
     .catch((err) => {
       Logger.error(err.message, DOMAIN);
-      return [];
+      return Promise.reject(err);
     });
   }
 }

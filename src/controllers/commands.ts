@@ -16,8 +16,9 @@ export default class CommandsControllers {
       this.getPictures = this.getPictures.bind(this)
       this.getTutorials = this.getTutorials.bind(this)
       this.getVideos = this.getVideos.bind(this)
-    } catch(err) {
+    } catch (err) {
       Logger.error(err.message, DOMAIN);
+      throw err;
     }
   }
   
@@ -30,7 +31,7 @@ export default class CommandsControllers {
       if (!photos || photos.length === 0) {
         Logger.debug(`No photo founded ${photos.length}`, DOMAIN);
         ctx.reply('NO PHOTOS :(');    
-        return false;
+        return true;
       } else {
         photos.forEach((photo) => {
           ctx.replyWithPhoto(photo)
@@ -42,7 +43,7 @@ export default class CommandsControllers {
     .catch((err: Error) => {
       Logger.error(err.message, DOMAIN);
       ctx.reply('NO PHOTOS :(');
-      return false;
+      return Promise.reject(err);
     });
   }
   
@@ -55,7 +56,7 @@ export default class CommandsControllers {
       if (!videos || videos.length === 0) {
         Logger.debug(`No videos founded ${videos.length}`, DOMAIN);
         ctx.reply('NO VIDEOS :(');
-        return false;
+        return true;
       } else {
         Logger.debug(`videos sended to user ${videos}`, DOMAIN);
         videos.forEach((video) => {
@@ -67,7 +68,7 @@ export default class CommandsControllers {
     .catch((err: Error) => {
       Logger.error(err.message, DOMAIN);
       ctx.reply('NO VIDEOS :(');    
-      return false;
+      return Promise.reject(err);
     });
   }
   
@@ -81,7 +82,7 @@ export default class CommandsControllers {
       if (!data.length) {
         Logger.debug(`No founded tutotials`, DOMAIN);
         ctx.reply('NO TUTORIALS :(');
-        return false;
+        return true;
       } else {
         Logger.debug(`Tutorials sended to user: ${data}`, DOMAIN);
         data.forEach(tutorial => {
@@ -93,7 +94,7 @@ export default class CommandsControllers {
     .catch((err) => {
       Logger.error(err.message, DOMAIN);
       ctx.reply('NO TUTORIALS :(');
-      return false;
+      return Promise.reject(err);
     });
   }  
     

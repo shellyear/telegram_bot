@@ -15,10 +15,10 @@ export default class NudeBot {
       this.bot.start((ctx) => {
         Logger.info(`Client ${ctx.from.username} has been joined`)
         ctx.reply('Welcome')
-        return true;
       })
-    } catch(err) {
+    } catch (err) {
       Logger.error(err.message, DOMAIN);
+      throw err;
     }
   }
 
@@ -28,9 +28,9 @@ export default class NudeBot {
         Logger.info('Bot was started', DOMAIN);
         return true;
       })
-      .catch(err => {
+      .catch((err) => {
         Logger.error(err.message, DOMAIN);
-        return false;
+        return Promise.reject(err);
       });
   }
 
@@ -42,7 +42,7 @@ export default class NudeBot {
       return true;
     } catch (err) {
       Logger.error(err.message, DOMAIN)
-      return false;
+      throw err;
     }
   }
 }
