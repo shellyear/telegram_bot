@@ -1,18 +1,19 @@
 import Logger, { LogLevel } from './logger';
 import NudeBot from './NudeBot';
-
-require('dotenv').config();
-const { ArgumentParser } = require('argparse');
+import { ArgumentParser } from 'argparse';
+import { version } from '../package.json';
+import {config} from 'dotenv';
+config();
 
 const parser = new ArgumentParser({ 
-    version: require('../package.json').version,
+    version,
     addHelp: true,
     description: 'Parser for logger\'s level'
 });
 
 parser.addArgument([ '-ll', '--logLevel' ],  // expected arguments
     {   
-        defaultValue: 1,
+        defaultValue: LogLevel.ERROR,
         help: "type: \"-ll\" or \"--logLevel\" " +
         "then type one of the keys: 1=ERROR 2=WARN 3=INFO 4=DEBUG. Default value is 1=ERROR."
     }
