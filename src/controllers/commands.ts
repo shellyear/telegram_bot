@@ -1,4 +1,4 @@
-import { ContextMessageUpdate } from "telegraf";
+import { Context } from "telegraf";
 import PexelsService from "../services/pexelsService";
 import CourseHunters from "../services/courseHunters";
 import commands from '../helpers/commandTypes';
@@ -18,8 +18,8 @@ export default class CommandsControllers {
   }
   
 
-  public getPictures(ctx: ContextMessageUpdate) {
-    const text = this.clearCommandFromRequest(ctx.update.message.text, commands.PICTURE);
+  public getPictures(ctx: Context) {
+    const text = this.clearCommandFromRequest(ctx.message.text, commands.PICTURE);
     this.pexelsService.getPictures(text) 
     .then((photos: string[]) => {
       Logger.debug(`found photos: ${photos.length}`, DOMAIN)
@@ -37,8 +37,8 @@ export default class CommandsControllers {
     });
   }
   
-  public getVideos(ctx: ContextMessageUpdate) {
-    const text = this.clearCommandFromRequest(ctx.update.message.text, commands.VIDEO);
+  public getVideos(ctx: Context) {
+    const text = this.clearCommandFromRequest(ctx.message.text, commands.VIDEO);
   
     return this.pexelsService.getVideos(text) 
     .then((videos: string[]) => {
@@ -56,9 +56,9 @@ export default class CommandsControllers {
     });
   }
   
-  public getTutorials(ctx: ContextMessageUpdate) {
+  public getTutorials(ctx: Context) {
 
-    const text = this.clearCommandFromRequest(ctx.update.message.text, commands.TUTORIAL);
+    const text = this.clearCommandFromRequest(ctx.message.text, commands.TUTORIAL);
   
     this.courseHunters.getTutorial(text)
     .then((data) => {       

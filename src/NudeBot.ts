@@ -1,11 +1,11 @@
-import Telegraf, { ContextMessageUpdate } from 'telegraf';
+import { Telegraf, Context } from 'telegraf';
 import CommandMiddleware from './middleware/commands';
 import Logger from './logger';
 
 const DOMAIN = 'NudeBot';
 
 export default class NudeBot {
-  private bot: Telegraf<ContextMessageUpdate>;
+  private bot: Telegraf<Context>;
   private commandMiddleware: CommandMiddleware;
 
   constructor() {

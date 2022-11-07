@@ -1,17 +1,17 @@
-import Telegraf, { ContextMessageUpdate, Composer } from "telegraf";
+import Telegraf, { Context, Composer } from "telegraf";
 import CommandsControllers from "../controllers/commands";
 import commands from '../helpers/commandTypes';
 
 const commandsController = new CommandsControllers();
 
 export default class CommandMiddleware {
-  private _bot: Telegraf<ContextMessageUpdate>;
+  private _bot: Telegraf<Context>;
 
-  constructor(bot: Telegraf<ContextMessageUpdate>) {
+  constructor(bot: Telegraf<Context>) {
     this._bot = bot;
   }
 
-  public onGetPictures(): Composer<ContextMessageUpdate> {
+  public onGetPictures(): Composer<Context> {
     try {
       return this._bot.command(commands.PICTURE, commandsController.getPictures);
     } catch (err) {

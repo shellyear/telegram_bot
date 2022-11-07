@@ -7,9 +7,9 @@ export default class CourseHunters {
   public getTutorial (query: string): Promise<string[]> {
     return axios.get(`${SEARCH_URL}${encodeURI(query)}`)
     .then(({data}) => {
-        const $: CheerioStatic = cheerio.load(data);
+        const $: cheerio.Root = cheerio.load(data);
         const links: string[] = [];
-        $('.course-details-bottom a').each((index: number, element: CheerioElement) => {
+        $('.course-details-bottom a').each((index: number, element: cheerio.Element) => {
             links[index] = $(element).attr('href');
         });
         return links;
