@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { PhotosWithTotalResults } from 'pexels';
+import { ErrorResponse, Photo, PhotosWithTotalResults } from 'pexels';
 import { PexelsClient } from '../index';
 
 require('dotenv').config();
@@ -18,13 +18,14 @@ export default class PexelsService {
     this.TOKEN = process.env.PEXELS_API_KEY;
   }
 
-  public getPictures(query: string, perPage: number = 5, page: number = 1): any {
+  public getPictures(query: string, perPage: number = 5, page: number = 1): Promise<string[]> {
     console.log({ query, queryString: `${PEXELS_PICTURE_API_URL}query=${encodeURI(query)}&per_page=${perPage}&page=${page}` })
-    return PexelsClient.photos.search({ per_page: perPage, page, query }).then(res => {
+    return PexelsClient.photos.search({ per_page: perPage, page, query }).then((res: PhotosWithTotalResults) => {
       console.log({ res })
-      return res
-    }).catch(err => {
-      console.log({ err })
+      return res.photos.map((photo: Photo) => photo.url)
+    }).catch((err: ErrorResponse) => {
+      console.log(err)
+      return []
     })
   }
 
