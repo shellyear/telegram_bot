@@ -18,9 +18,9 @@ export default class CommandsControllers {
   }
   
 
-  public getPictures(ctx: Context) {
+  public getPictures(ctx: Context): Promise<void> {
     const text = this.clearCommandFromRequest(ctx.message.text, commands.PICTURE);
-    this.pexelsService.getPictures(text) 
+    return this.pexelsService.getPictures(text) 
     .then((photos: string[]) => {
       Logger.debug(`found photos: ${photos.length}`, DOMAIN)
       if (!photos) {
@@ -37,7 +37,7 @@ export default class CommandsControllers {
     });
   }
   
-  public getVideos(ctx: Context) {
+  public getVideos(ctx: Context): Promise<void> {
     const text = this.clearCommandFromRequest(ctx.message.text, commands.VIDEO);
   
     return this.pexelsService.getVideos(text) 
@@ -46,8 +46,10 @@ export default class CommandsControllers {
         ctx.reply('NO VIDEOS :(');    
       } else {
         videos.forEach((video) => {
-          ctx.replyWithVideo(video)
-        });
+          ctx.replyWithVideo(video).catch((err: Error) => {
+            Logger.error(err.message, DOMAIN)
+          })
+        })
       }
     })
     .catch((err: Error) => {

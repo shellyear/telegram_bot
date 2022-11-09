@@ -1,27 +1,11 @@
-import axios from 'axios';
-import { ErrorResponse, Photo, PhotosWithTotalResults } from 'pexels';
+import { ErrorResponse, Photo, PhotosWithTotalResults, Video, Videos } from 'pexels';
 import { PexelsClient } from '../index';
 
 require('dotenv').config();
 
-const PEXELS_PICTURE_API_URL = 'https://api.pexels.com/v1/search?'
-const PEXELS_VIDEO_API_URL = 'https://api.pexels.com/videos/'
-
-type VideoSrc = { 
-  video_files: { link: string }[]
-}
-
 export default class PexelsService {
-  private TOKEN: string;
-  
-  constructor() {
-    this.TOKEN = process.env.PEXELS_API_KEY;
-  }
-
   public getPictures(query: string, perPage: number = 5, page: number = 1): Promise<string[]> {
-    console.log({ query, queryString: `${PEXELS_PICTURE_API_URL}query=${encodeURI(query)}&per_page=${perPage}&page=${page}` })
     return PexelsClient.photos.search({ per_page: perPage, page, query }).then((res: PhotosWithTotalResults) => {
-      console.log({ res })
       return res.photos.map((photo: Photo) => photo.url)
     }).catch((err: ErrorResponse) => {
       console.log(err)
@@ -30,20 +14,12 @@ export default class PexelsService {
   }
 
   public getVideos(query: string, perPage: number = 5, page: number = 1): Promise<string[]> {
-    return axios.get(`${PEXELS_VIDEO_API_URL}query=${encodeURI(query)}&per_page=${perPage}&page=${page}`, {
-      headers:{
-        'Authorization': this.TOKEN
-      }
+    return PexelsClient.videos.search({ per_page: perPage, page, query }).then(({ videos }: Videos) => {
+      const result: string[] = videos.flatMap((video: Video) => video.video_files[0]).map(videoFile => videoFile.link)
+      return result
+    }).catch((err: ErrorResponse) => {
+      console.log(err)
+      return []
     })
-    .then(({data}) => {
-      const {videos} = data;
-      return videos.map((src: VideoSrc) => {
-        return src.video_files[0].link;
-      });
-    })
-    .catch((err) => {
-      console.log(err.message);
-      return [];
-    });
   }
 }
