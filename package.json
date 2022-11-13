@@ -25,7 +25,7 @@
     "@types/cheerio": "^0.22.12",
     "dotenv": "^8.0.0",
     "nodemon": "^2.0.20",
-    "ts-node": "^8.3.0",
+    "ts-node": "^8.10.2",
     "tslint-config-airbnb": "^5.11.1",
     "typescript": "^3.5.2"
   }
