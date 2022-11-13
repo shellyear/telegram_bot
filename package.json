@@ -9,6 +9,9 @@
     "prestart": "npm install",
     "start": "ts-node src/index.ts"
   },
+  "engines": {
+    "node": "16.x"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
