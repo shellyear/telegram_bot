@@ -22,6 +22,7 @@ export default class CommandsControllers {
     const text = this.clearCommandFromRequest(ctx.message.text, commands.PICTURE);
     return this.pexelsService.getPictures(text) 
     .then((photos: string[]) => {
+      console.log({ photos })
       Logger.debug(`found photos: ${photos.length}`, DOMAIN)
       if (!photos) {
         ctx.reply('NO PHOTOS :(');    
@@ -32,7 +33,7 @@ export default class CommandsControllers {
       }
     })
     .catch((err: Error) => {
-      console.log(err.message);
+      Logger.error(err.message, DOMAIN)
       ctx.reply('NO PHOTOS :(');
     });
   }

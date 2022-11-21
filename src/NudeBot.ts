@@ -36,7 +36,7 @@ export default class NudeBot {
 
   public commands() {
     this.commandMiddleware.onGetPictures();
-    this.commandMiddleware.onGetTutorials();
+    // this.commandMiddleware.onGetTutorials();
     this.commandMiddleware.onGetVideos();
   }
 }

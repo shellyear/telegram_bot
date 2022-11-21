@@ -1,14 +1,16 @@
 import { ErrorResponse, Photo, PhotosWithTotalResults, Video, Videos } from 'pexels';
 import { PexelsClient } from '../index';
+import Logger from '../logger';
 
 require('dotenv').config();
 
+const DOMAIN = 'PexelsService'
 export default class PexelsService {
   public getPictures(query: string, perPage: number = 5, page: number = 1): Promise<string[]> {
     return PexelsClient.photos.search({ per_page: perPage, page, query }).then((res: PhotosWithTotalResults) => {
       return res.photos.map((photo: Photo) => photo.url)
     }).catch((err: ErrorResponse) => {
-      console.log(err)
+      Logger.error(err.error, DOMAIN)
       return []
     })
   }

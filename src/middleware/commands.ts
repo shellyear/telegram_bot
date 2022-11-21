@@ -1,9 +1,11 @@
 import Telegraf, { Context, Composer } from "telegraf";
 import CommandsControllers from "../controllers/commands";
 import commands from '../helpers/commandTypes';
+import Logger from "../logger";
 
 const commandsController = new CommandsControllers();
 
+const DOMAIN = 'CommandMiddleware'
 export default class CommandMiddleware {
   private _bot: Telegraf<Context>;
 
@@ -15,8 +17,7 @@ export default class CommandMiddleware {
     try {
       return this._bot.command(commands.PICTURE, commandsController.getPictures);
     } catch (err) {
-      // log /
-      throw new Error('error description')
+      Logger.error(err.message, DOMAIN)
     }
   }
   public onGetVideos() {
