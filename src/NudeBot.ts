@@ -16,6 +16,13 @@ export default class NudeBot {
         Logger.info(`Client ${ctx.from.username} has been joined`)
         ctx.reply('Welcome')
       });
+      // this block is under question
+      this.bot.launch({
+        webhook: {
+          port: Number(process.env.PORT) || 3000
+        }
+      })
+      //
     } catch(err) {
       Logger.error(err.message, DOMAIN);
       throw new Error(err.message);
